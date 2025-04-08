@@ -17,37 +17,49 @@ def start_stopwatch():
     if not running:
         start_time = time.time() - elapsed_time
         running = True
+        start_button.config(state="disabled")  # Disable start when running
         update_time()
 
 def pause_stopwatch():
     global running
     running = False
+    start_button.config(state="normal")  # Enable start button when paused
 
 def reset_stopwatch():
     global start_time, elapsed_time, running
     running = False
     elapsed_time = 0
     time_var.set("00:00:00")
+    start_button.config(state="normal")  # Enable start button on reset
 
 # Initialize GUI
 root = tk.Tk()
 root.title("Stopwatch")
+root.geometry("300x200")  # Set window size
+root.resizable(False, False)  # Disable resizing
 
 time_var = StringVar()
 time_var.set("00:00:00")
 
-time_label = tk.Label(root, textvariable=time_var, font=("Arial", 30))
-time_label.pack()
+# Time Display
+time_label = tk.Label(root, textvariable=time_var, font=("Arial", 30), bg="black", fg="white")
+time_label.pack(pady=20)
 
-start_button = tk.Button(root, text="Start", command=start_stopwatch)
-start_button.pack()
+# Button Frame
+button_frame = tk.Frame(root)
+button_frame.pack()
 
-pause_button = tk.Button(root, text="Pause", command=pause_stopwatch)
-pause_button.pack()
+# Buttons with Padding
+start_button = tk.Button(button_frame, text="Start", command=start_stopwatch, width=8)
+start_button.grid(row=0, column=0, padx=5)
 
-reset_button = tk.Button(root, text="Reset", command=reset_stopwatch)
-reset_button.pack()
+pause_button = tk.Button(button_frame, text="Pause", command=pause_stopwatch, width=8)
+pause_button.grid(row=0, column=1, padx=5)
 
+reset_button = tk.Button(button_frame, text="Reset", command=reset_stopwatch, width=8)
+reset_button.grid(row=0, column=2, padx=5)
+
+# Variables
 start_time = 0
 elapsed_time = 0
 running = False
